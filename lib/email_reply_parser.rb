@@ -83,7 +83,8 @@ class EmailReplyParser
 
       # Check for multi-line reply headers. Some clients break up
       # the "On DATE, NAME <EMAIL> wrote:" line into multiple lines.
-      if text =~ /^(?!On.*On\s.+?wrote:)(On\s(.+?)wrote:)$/m
+      if text =~ /^(?!On.*On\s.+?wrote:)(On\s(.+?)wrote:)$/m ||
+         text =~ /^(?!Le.*Le\s.+?écrit:)(Le\s(.+?)écrit:)$/m
         # Remove all new lines from the reply header.
         text.gsub! $1, $1.gsub("\n", " ")
       end

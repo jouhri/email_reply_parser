@@ -56,6 +56,23 @@ I am currently using the Java HTTP API.\n", reply.fragments[0].to_s
     assert_match(/^_/, reply.fragments[4].to_s)
   end
 
+  def test_reads_french_reply
+    reply = email(:email_1_3)
+    assert_equal 5, reply.fragments.size
+
+    assert_equal [false, false, true, false, false],
+      reply.fragments.map { |f| f.quoted? }
+    assert_equal [false, true, true, true, true],
+      reply.fragments.map { |f| f.hidden? }
+    assert_equal [false, true, false, false, true],
+      reply.fragments.map { |f| f.signature? }
+
+    assert_match(/^Oh thanks.\n\nHaving/, reply.fragments[0].to_s)
+    assert_match(/^-A/, reply.fragments[1].to_s)
+    assert_match(/^Le [^\:]+\:/, reply.fragments[2].to_s)
+    assert_match(/^_/, reply.fragments[4].to_s)
+  end
+
   def test_reads_bottom_post
     reply = email(:email_1_2)
     assert_equal 6, reply.fragments.size
